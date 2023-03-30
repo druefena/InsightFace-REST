@@ -190,7 +190,9 @@ if __name__ == "__main__":
             files = ['test_images/Stallone.jpg']
         print(f'No data directory provided. Using `{files[0]}` for testing.')
     else:
-        files = glob.glob(os.path.join(args.dir, '*/*.*'))
+        #files = glob.glob(os.path.join(args.dir, '*/*.*'))
+        files = glob.glob(os.path.join(args.dir, '*.*'))
+        #import pdb; pdb.set_trace()
         files = [file for file in files if os.path.splitext(file)[1].lower() in allowed_ext]
         if args.dir.startswith('src/api_trt/'):
             files = [file.replace('src/api_trt/', '') for file in files]
@@ -212,7 +214,7 @@ if __name__ == "__main__":
 
     _part_extract_vecs = partial(client.extract, extract_embedding=to_bool(args.embed),
                                  embed_only=to_bool(args.embed_only), mode=mode,
-                                 limit_faces=args.limit_faces)
+                                 limit_faces=args.limit_faces, return_face_data=True)
 
     pool = multiprocessing.Pool(args.threads)
     speeds = []

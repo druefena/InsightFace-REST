@@ -92,6 +92,16 @@ models = {
         'md5sum': '8868eace383b8137afd97bcb7f322731',
         'dl_type': 'google'
     },
+    'mobius_facefeat': {
+        'shape': (1, 3, 112, 112),
+        'allow_batching': True,
+        'reshape': False,
+        'in_package': False,
+        'function': 'arcface_mxnet',
+        'link': '1sj170K3rbo5iOdjvjHw-hKWvXgH4dld3',
+        'md5sum': '8868eace383b8137afd97bcb7f322731',
+        'dl_type': 'google'
+    },
     'genderage_v1': {
         'shape': (1, 3, 112, 112),
         'allow_batching': True,

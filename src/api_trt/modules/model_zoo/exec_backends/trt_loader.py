@@ -60,6 +60,7 @@ class TrtModel(object):
         assert os.path.exists(self.engine_file), "Engine file doesn't exist"
 
         runtime = trt.Runtime(TrtModel.TRT_LOGGER)
+        #import pdb; pdb.set_trace()
         with open(self.engine_file, 'rb') as engine_file:
             self.engine = runtime.deserialize_cuda_engine(engine_file.read())
 

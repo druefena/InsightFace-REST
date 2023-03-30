@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 from modules.utils.image_provider import get_images
 
-from .face_model import FaceAnalysis
+from .face_model_dom import FaceAnalysis
 
 
 class Serializer:
@@ -62,14 +62,14 @@ def serialize_face(_face_dict: dict, return_face_data: bool, return_landmarks: b
 
 class Processing:
 
-    def __init__(self, det_name: str = 'retinaface_r50_v1', rec_name: str = 'arcface_r100_v1',
-                 ga_name: str = 'genderage_v1', mask_detector: str = 'mask_detector',
+    def __init__(self, det_name: str = 'scrfd_10g_gnkps', rec_name: str = 'glintr100',
+                 ga_name: str = None, mask_detector: str = None,
                  max_size: List[int] = None,
-                 backend_name: str = 'trt', max_rec_batch_size: int = 1, max_det_batch_size: int = 1,
-                 force_fp16: bool = False, triton_uri=None, root_dir: str = '/models'):
+                 backend_name: str = 'onnx', max_rec_batch_size: int = 1, max_det_batch_size: int = 1,
+                 force_fp16: bool = False, triton_uri=None, root_dir: str = '/nas/dominic/Production/FaceModel_REST/InsightFace-REST/models'):
 
         if max_size is None:
-            max_size = [640, 480]
+            max_size = [640, 640]
 
         self.max_rec_batch_size = max_rec_batch_size
         self.max_det_batch_size = max_det_batch_size

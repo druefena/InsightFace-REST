@@ -159,7 +159,7 @@ class MaskDetection:
 
 class DetectorInfer:
 
-    def __init__(self, model='/models/trt-engines/centerface/centerface.plan',
+    def __init__(self, model='/models/trt-engines/scrfd_10g_gnkps/scrfd_10g_gnkps_640_640_fp16.plan',
                  output_order=None, **kwargs):
         self.rec_model = TrtModel(model)
         self.model_name = os.path.basename(model)

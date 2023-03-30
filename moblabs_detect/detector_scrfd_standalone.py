@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-# Based on Jia Guo reference implementation at
-# https://github.com/deepinsight/insightface/blob/master/detection/scrfd/tools/scrfd.py
-
-
 from __future__ import division
 import time
 from typing import Union
@@ -13,15 +9,15 @@ import cv2
 import numpy as np
 from numba import njit
 
-from .common.nms import nms
-from ..exec_backends.onnxrt_backend import DetectorInfer as DIO
+from helpers import nms
+from onnxrt_backend import DetectorInfer as DIO
 
-# Since TensorRT and pycuda are optional dependencies it might be not available
-try:
-    import cupy as cp
-    from ..exec_backends.trt_backend import DetectorInfer as DIT
-except BaseException:
-    DIT = None
+# # Since TensorRT and pycuda are optional dependencies it might be not available
+# try:
+#     import cupy as cp
+#     from ..exec_backends.trt_backend import DetectorInfer as DIT
+# except BaseException:
+#     DIT = None
 
 import asyncio
 
@@ -117,7 +113,7 @@ def filter(bboxes_list: np.ndarray, kpss_list: np.ndarray,
     """
 
     pre_det = np.hstack((bboxes_list, scores_list))
-    keep = nms(pre_det, thresh=nms_threshold)
+    keep = nms(pre_det, thresh=nms_threshold) #see helpers.py
     keep = np.asarray(keep)
     det = pre_det[keep, :]
     kpss = kpss_list[keep, :]
@@ -148,7 +144,8 @@ def _normalize_on_device(input, stream, out):
 
 class SCRFD:
 
-    def __init__(self, inference_backend: Union[DIT, DIO], ver=1):
+    #def __init__(self, inference_backend: Union[DIT, DIO], ver=1):
+    def __init__(self, inference_backend: DIO, ver=1):
         self.session = inference_backend
         self.center_cache = {}
         self.nms_threshold = 0.4

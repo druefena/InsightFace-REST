@@ -110,6 +110,7 @@ def prepare_backend(model_name, backend_name, im_size: List[int] = None,
             onnx_exists = False
             trt_rebuild_required = True
 
+
     if not onnx_exists and download_model is True:
         prepare_folders([onnx_dir])
         dl_link = config.get_dl_link(model_name)
@@ -222,4 +223,5 @@ def get_model(model_name: str, backend_name: str, im_size: List[int] = None, max
 
     func = func_map[config.models[model_name].get('function')]
     model = func(model_path=model_path, backend=backend, outputs=outputs, triton_uri=triton_uri)
+
     return model

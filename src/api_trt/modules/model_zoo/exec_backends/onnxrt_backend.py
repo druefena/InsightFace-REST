@@ -5,11 +5,12 @@ import logging
 
 
 class Arcface:
+    # TODO: Replace with our own model. Attention: Our model results more than just the face features.
     def __init__(self, rec_name='/models/onnx/arcface_r100_v1/arcface_r100_v1.onnx',
                  input_mean: float = 0.,
                  input_std: float = 1.,
                  **kwargs):
-        self.rec_model = onnxruntime.InferenceSession(rec_name)
+        self.rec_model = onnxruntime.InferenceSession(rec_name, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
         self.input_mean = input_mean
         self.input_std = input_std
         self.outputs = [e.name for e in self.rec_model.get_outputs()]
@@ -36,7 +37,7 @@ class Arcface:
 class FaceGenderage:
 
     def __init__(self, rec_name='/models/onnx/genderage_v1/genderage_v1.onnx', outputs=None, **kwargs):
-        self.rec_model = onnxruntime.InferenceSession(rec_name)
+        self.rec_model = onnxruntime.InferenceSession(rec_name, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
         self.input = self.rec_model.get_inputs()[0]
         if outputs is None:
             outputs = [e.name for e in self.rec_model.get_outputs()]
@@ -77,7 +78,7 @@ class FaceGenderage:
 class MaskDetection:
 
     def __init__(self, rec_name='/models/onnx/genderage_v1/genderage_v1.onnx', outputs=None, **kwargs):
-        self.rec_model = onnxruntime.InferenceSession(rec_name)
+        self.rec_model = onnxruntime.InferenceSession(rec_name, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
         self.input = self.rec_model.get_inputs()[0]
         if outputs is None:
             outputs = [e.name for e in self.rec_model.get_outputs()]
@@ -111,11 +112,14 @@ class MaskDetection:
 
 class DetectorInfer:
 
-    def __init__(self, model='/models/onnx/centerface/centerface.onnx',
+    def __init__(self, model='/models/onnx/scrfd_10g_gnkps/scrfd_10g_gnkps.onnx',
                  output_order=None, **kwargs):
 
-        self.rec_model = onnxruntime.InferenceSession(model)
+        self.rec_model = onnxruntime.InferenceSession(model, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
+        #self.rec_model = onnxruntime.InferenceSession(model, providers=[("CUDAExecutionProvider", {"cudnn_conv_algo_search": "DEFAULT"}), "CPUExecutionProvider"])
         logging.info('Detector started')
+        #import pdb; pdb.set_trace()
+
         self.input = self.rec_model.get_inputs()[0]
         self.input_dtype = self.input.type
         if self.input_dtype == 'tensor(float)':
